@@ -220,6 +220,60 @@ body {
     color: #333;
     }
 
+/* --- 7. CSS สำหรับปุ่มอัปโหลดสลิป (แปะเพิ่มล่างสุด) --- */
+
+.slip-uploader {
+    margin-top: 1.5rem;
+    border-top: 1px solid #eee;
+    padding-top: 1.5rem;
+}
+
+/* ซ่อน <input type="file"> จริง */
+.slip-uploader input[type="file"] {
+    display: none;
+}
+
+/* ปุ่ม "เลือกไฟล์สลิป" ที่เราทำเอง */
+.slip-uploader-label {
+    display: inline-block;
+    padding: 0.7rem 1.2rem;
+    background-color: #28a745; /* สีเขียว */
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.slip-uploader-label:hover {
+    background-color: #218838;
+}
+
+/* ชื่อไฟล์ที่เลือก */
+.slip-file-name {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* ปุ่ม "ยืนยันการชำระเงิน" */
+.btn-confirm-payment {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 1rem;
+    background-color: #007FFF; /* สีน้ำเงิน */
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+/* (สไตล์ตอนที่ปุ่มถูก disabled) */
+.btn-confirm-payment:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+    }
 
 
 
