@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop - NonKungShop</title>
     <link rel="stylesheet" href="style.css">
+
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="nav.js"></script>
 </head>
 <body>
 
@@ -15,17 +19,17 @@
             <a href="shop.html" class="nav-link active">Shop</a> <a href="contact.html" class="nav-link">Contact</a>
         </div>
         <div class="nav-login">
-            <a href="login.html" class="nav-link-button">Login</a>
-        </div>
+            </div>
     </nav>
 
     <main class="container">
         <h1>Our Products</h1>
-        <p>สินค้าทั้งหมดจะแสดงที่นี่ (เดี๋ยวเราจะใช้ JS ดึงของจาก Firebase มาโชว์ครับ)</p>
         
-        <div id="product-list">
+        <div id="product-list" class="product-grid">
             </div>
     </main>
 
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    <script src="shop.js"></script>
 </body>
 </html>
