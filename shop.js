@@ -2,28 +2,31 @@
 
 // --- 🔥 ข้อมูลการชำระเงินของคุณ ---
 const PROMPT_PAY_QR_URL = "https://res.cloudinary.com/ddpgaowiq/image/upload/v1760798023/screenshot_20251018_212152_tivgnm.png";
-const TRUE_MONEY_NUMBER = "064-897-6803"; // (ผมใส่ขีดให้ดูง่ายครับ)
+const TRUE_MONEY_NUMBER = "064-897-6803";
 // ---------------------------------
 
 
 // (รอให้ DOM โหลดเสร็จก่อน ค่อยทำงาน)
 document.addEventListener('DOMContentLoaded', () => {
 
+    // (เราต้องใช้ db จาก Firebase - ซึ่งถูกโหลดมาจาก shop.html)
     const db = firebase.firestore();
+
+    // --- 1. หาตำแหน่งที่จะใส่สินค้า ---
     const productListDiv = document.getElementById('product-list');
 
-    // --- 1. ฟังก์ชันสร้าง Pop-up ---
+    // --- 2. ฟังก์ชันสร้าง Pop-up ---
     function showPaymentModal(product) {
         
-        // 1.1 สร้างพื้นหลังสีดำ
+        // 2.1 สร้างพื้นหลังสีดำ
         const backdrop = document.createElement('div');
         backdrop.className = 'payment-modal-backdrop';
 
-        // 1.2 สร้างกล่อง Pop-up
+        // 2.2 สร้างกล่อง Pop-up
         const modal = document.createElement('div');
         modal.className = 'payment-modal-content';
 
-        // 1.3 ใส่เนื้อหาลงใน Pop-up
+        // 2.3 ใส่เนื้อหาลงใน Pop-up
         modal.innerHTML = `
             <button class="payment-modal-close">&times;</button>
             
@@ -52,11 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </p>
         `;
 
-        // 1.4 เอา Pop-up ไปแปะในหน้าเว็บ
+        // 2.4 เอา Pop-up ไปแปะในหน้าเว็บ
         backdrop.appendChild(modal);
         document.body.appendChild(backdrop);
 
-        // 1.5 สั่งให้ปุ่มปิด (กากบาท) ทำงาน
+        // 2.5 สั่งให้ปุ่มปิด (กากบาท) ทำงาน
         modal.querySelector('.payment-modal-close').onclick = () => {
             document.body.removeChild(backdrop);
         };
@@ -69,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- 2. ฟังก์ชันดึงสินค้า (เหมือนเดิม) ---
+    // --- 3. ฟังก์ชันดึงสินค้า (เหมือนเดิม) ---
     async function loadProducts() {
         if (!productListDiv) return;
         
@@ -101,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
                 
-                // --- 🔥 3. (สำคัญ!) เปลี่ยน OnClick ให้เรียก Pop-up 🔥 ---
+                // --- 🔥 4. (สำคัญ!) เปลี่ยน OnClick ให้เรียก Pop-up 🔥 ---
                 const buyButton = card.querySelector('.btn-buy');
                 buyButton.onclick = () => {
                     // (ไม่ใช่ alert แล้ว!)
@@ -117,6 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 4. สั่งให้โหลดสินค้าทันที (เหมือนเดิม) ---
+    // --- 5. สั่งให้โหลดสินค้าทันที (เหมือนเดิม) ---
     loadProducts();
 });
