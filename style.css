@@ -90,11 +90,28 @@ body {
     box-shadow: 0 8px 25px rgba(0, 127, 255, 0.2); /* เงาสีฟ้า */
 }
 
-.product-image {
-    width: 100%;
-    height: 250px; /* ความสูงรูป */
-    object-fit: cover; /* ทำให้รูปเต็มกรอบโดยไม่บิดเบี้ยว */
+/* --- 5. CSS สำหรับปุ่มซื้อ (แปะเพิ่มล่างสุด) --- */
+
+.btn-buy {
+    width: 100%; /* ทำให้ปุ่มเต็มความกว้างการ์ด */
+    padding: 0.8rem 1rem;
+    margin-top: 1rem; /* เว้นระยะห่างจากราคา */
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: 'Kanit', sans-serif;
+    color: white;
+    background-color: #007FFF; /* สีน้ำเงิน (Azure) */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
 }
+
+.btn-buy:hover {
+    background-color: #005f9e; /* สีน้ำเงินเข้มขึ้น */
+    transform: translateY(-2px); /* ลอยนิดๆ */
+}
+
 
 .product-info {
     padding: 1.5rem;
