@@ -2,13 +2,14 @@
 
 // 1. ใส่ Config (เช็กให้ชัวร์ว่าคัดลอกมาครบ)
 const firebaseConfig = {
-  apiKey: "AIzaSyAz9PWhBDPWUQ1ZGN52rXW6bxMSUxanAVo",
-  authDomain: "nonkungshop.firebaseapp.com",
-  projectId: "nonkungshop",
-  storageBucket: "nonkungshop.firebasestorage.app",
-  messagingSenderId: "961630356337",
-  appId: "1:961630356337:web:0268966e8635f54b68acd0"
+  apiKey: "AIzaSyCPeHRJASYNFtMIpikn8ASPz7kQosL3ftQ",
+  authDomain: "nonkungshop1.firebaseapp.com",
+  projectId: "nonkungshop1",
+  storageBucket: "nonkungshop1.firebasestorage.app",
+  messagingSenderId: "776950833243",
+  appId: "1:776950833243:web:55b6609a7f547cd8ea5f7e"
 };
+
 
 // 2. อีเมล Admin
 const ADMIN_EMAIL = "admin@nonkungshop.com";
