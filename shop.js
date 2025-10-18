@@ -208,3 +208,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- สั่งให้โหลดสินค้าทันที ---
     loadProducts();
 });
+
