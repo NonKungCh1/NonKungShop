@@ -3,7 +3,7 @@
 // (รอให้ DOM โหลดเสร็จก่อน ค่อยทำงาน)
 document.addEventListener('DOMContentLoaded', () => {
 
-    // (เราต้องใช้ db จาก Firebase)
+    // (เราต้องใช้ db จาก Firebase - ซึ่งถูกโหลดมาจาก shop.html)
     const db = firebase.firestore();
 
     // --- 1. หาตำแหน่งที่จะใส่สินค้า ---
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // สร้างกล่อง (div) สำหรับสินค้า
                 const card = document.createElement('div');
-                card.className = 'product-card'; // (เดี๋ยวเราจะไปเพิ่ม CSS นี้)
+                card.className = 'product-card'; // (ใช้ CSS จาก style.css)
                 
                 // ใส่ HTML ของการ์ดสินค้า
                 card.innerHTML = `
@@ -41,10 +41,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         <h3 class="product-title">${product.name}</h3>
                         <p class="product-desc">${product.description}</p>
                         <p class="product-price">${product.price} บาท</p>
+                        
+                        <button class="btn-buy">ซื้อเลย</button> 
+                        
                     </div>
                 `;
                 
-                // 3. เอากล่องไปแปะในหน้าเว็บ
+                // 3. (สำคัญ) เพิ่ม Event ให้ปุ่ม "ซื้อเลย" ที่เพิ่งสร้าง
+                const buyButton = card.querySelector('.btn-buy');
+                buyButton.onclick = () => {
+                    // (ในอนาคต ตรงนี้เราจะทำระบบตะกร้าสินค้า)
+                    alert('คุณเลือก ' + product.name + ' ราคา ' + product.price + ' บาท'); 
+                };
+
+                // 4. เอากล่องไปแปะในหน้าเว็บ
                 productListDiv.appendChild(card);
             });
 
@@ -57,4 +67,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 3. สั่งให้โหลดสินค้าทันที ---
     loadProducts();
 });
-
