@@ -22,6 +22,33 @@
         <div class="nav-login">
             </div>
     </nav>
+    <main class="login-container">
 
+        <div class="login-box">
+            <h2>สำหรับลูกค้า</h2>
+            <p>ล็อกอินด้วย Google เพื่อสั่งซื้อสินค้า</p>
+            <button id="google-login-btn" class="btn btn-google">
+                Login with Google
+            </button>
+        </div>
+
+        <hr>
+
+        <div class="login-box">
+            <h2>สำหรับเจ้าของเว็บ</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-email">Email:</label>
+                    <input type="email" id="admin-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Password:</label>
+                    <input type="password" id="admin-password" required>
+                </div>
+                <button type="submit" class="btn btn-admin">
+                    Admin Login
+                </button>
+            </form>
+        </div>
     </body>
 </html>
