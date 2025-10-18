@@ -1,11 +1,13 @@
 /* style.css */
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap');
 
 /* --- 1. การตั้งค่าทั่วไป --- */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Kanit', sans-serif; /* <-- เพิ่มบรรทัดนี้ */
     margin: 0;
-    background-color: #f4f4f4; /* สีพื้นหลังเว็บ (เทาอ่อนๆ) */
+    background-color: #1a1a1a; /* <-- เปลี่ยนสีพื้นหลังเป็น "เทาเข้มเกือบดำ" */
 }
+
 
 .container {
     max-width: 1000px;
