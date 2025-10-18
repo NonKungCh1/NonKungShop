@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - NonKungShop</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .admin-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .form-admin {
+            border-bottom: 2px solid #007FFF;
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            box-sizing: border-box; /* ทำให้ padding ไม่ล้น */
+        }
+        .btn-admin-submit {
+            background-color: #28a745;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        /* (CSS สำหรับปุ่มลบสินค้า) */
+        .product-list { margin-top: 1rem; }
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        .product-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="nav.js"></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="nav-logo">NonKungShop</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="shop.html" class="nav-link">Shop</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </div>
+        <div class="nav-login">
+            </div>
+    </nav>
+
+    <main class="admin-container">
+        <h1>Admin Panel (จัดการร้าน)</h1>
+
+        <form class="form-admin" id="add-product-form">
+            <h2>เพิ่มสินค้าใหม่</h2>
+            
+            <div class="form-group">
+                <label for="product-name">ชื่อสินค้า:</label>
+                <input type="text" id="product-name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="product-price">ราคา (บาท):</label>
+                <input type="number" id="product-price" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="product-desc">รายละเอียด (ย่อ):</label>
+                <textarea id="product-desc" rows="3"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="product-image">รูปภาพสินค้า:</label>
+                <input type="file" id="product-image" accept="image/*" required>
+            </div>
+            
+            <button type="submit" class="btn-admin-submit" id="submit-btn">
+                เพิ่มสินค้า
+            </button>
+            <div id="upload-status" style="margin-top: 1rem;"></div>
+        </form>
+
+        <h2>สินค้าที่มีอยู่ (คลิกเพื่อลบ)</h2>
+        <div class="product-list" id="product-list-admin">
+            </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-storage-compat.js"></script>
+    <script src="admin.js"></script>
+
+</body>
+  </html>
+                                                        
