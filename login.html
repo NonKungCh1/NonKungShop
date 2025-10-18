@@ -7,14 +7,106 @@
     <link rel="stylesheet" href="style.css">
     
     <style>
-        .login-container { max-width: 500px; /* ... (เหมือนเดิม) ... */ }
-        .login-box { /* ... (เหมือนเดิม) ... */ }
-        /* ... (CSS อื่นๆ เหมือนเดิม) ... */
+        .login-container {
+            max-width: 450px;
+            margin: 3rem auto;
+            padding: 2.5rem;
+            background: #ffffff; /* สีขาว */
+            border-radius: 12px; /* ทำให้ขอบมน */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-out; /* เพิ่ม Animation */
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-box {
+            margin-bottom: 2rem;
+            text-align: center; /* จัดทุกอย่างกลาง */
+        }
+        .login-box:last-child {
+            margin-bottom: 0;
+        }
+        
+        .login-box h2 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: #333;
+            border-bottom: 3px solid #007FFF; /* สีน้ำเงิน Azure */
+            padding-bottom: 0.5rem;
+            display: inline-block; /* ทำให้เส้นขีดสั้นลง */
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left; /* ให้ label/input ชิดซ้าย */
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            box-sizing: border-box; 
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Kanit', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        /* ตอนที่คลิก input */
+        .form-group input:focus {
+            border-color: #007FFF; /* สีน้ำเงิน */
+            box-shadow: 0 0 8px rgba(0, 127, 255, 0.3);
+            outline: none;
+        }
+
+        /* --- สไตล์ปุ่ม (สำคัญ) --- */
+        .btn {
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            font-family: 'Kanit', sans-serif;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px); /* เอฟเฟกต์ลอยนิดๆ */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-google {
+            background-color: #4285F4;
+            color: white;
+        }
+        .btn-google:hover {
+            background-color: #357ae8;
+        }
+
+        .btn-admin {
+            background-color: #333; /* สีเทาเข้ม */
+            color: white;
+        }
+        .btn-admin:hover {
+            background-color: #000000; /* สีดำ */
+        }
     </style>
 
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
-    
     <script src="nav.js"></script>
 </head>
 <body>
@@ -31,26 +123,36 @@
     </nav>
 
     <main class="login-container">
+
         <div class="login-box">
             <h2>สำหรับลูกค้า</h2>
-            <button id="google-login-btn" class="btn btn-google">Login with Google</button>
+            <p style="color: #666; margin-bottom: 1.5rem;">ล็อกอินด้วย Google เพื่อสั่งซื้อสินค้า</p>
+            <button id="google-login-btn" class="btn btn-google">
+                Login with Google
+            </button>
         </div>
-        <hr>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 2rem 0;">
+
         <div class="login-box">
             <h2>สำหรับเจ้าของเว็บ</h2>
             <form id="admin-login-form">
                 <div class="form-group">
                     <label for="admin-email">Email:</label>
-                    <input type="email" id="admin-email" required>
+                    <input type="email" id="admin-email" placeholder="admin@nonkungshop.com" required>
                 </div>
                 <div class="form-group">
                     <label for="admin-password">Password:</label>
-                    <input type="password" id="admin-password" required>
+                    <input type="password" id="admin-password" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="btn btn-admin">Admin Login</button>
+                <button type="submit" class="btn btn-admin">
+                    Admin Login
+                </button>
             </form>
         </div>
-        <div id="error-message" style="color: red; margin-top: 1rem;"></div>
+
+        <div id="error-message" style="color: red; text-align: center; margin-top: 1rem; font-weight: bold;"></div>
+
     </main>
 
     <script src="auth.js"></script>
