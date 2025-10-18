@@ -1,0 +1,65 @@
+/* style.css */
+
+/* --- 1. การตั้งค่าทั่วไป --- */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f4f4; /* สีพื้นหลังเว็บ (เทาอ่อนๆ) */
+}
+
+.container {
+    max-width: 1000px;
+    margin: 2rem auto; /* เว้นขอบ 2rem และจัดกลาง */
+    padding: 1rem;
+}
+
+/* --- 2. ธีมสี ดำ-ฟ้า-น้ำเงิน (ตามที่คุณขอ) --- */
+.navbar {
+    background-color: #000000; /* สีดำ */
+    border-bottom: 3px solid #005f9e; /* สีน้ำเงินเข้ม */
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    margin-right: 2rem;
+}
+
+.nav-links {
+    flex-grow: 1; /* ดันส่วน login ไปขวาสุด */
+}
+
+.nav-link {
+    color: #00BFFF; /* สีฟ้า (Deep Sky Blue) */
+    text-decoration: none;
+    margin-right: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.nav-link.active,
+.nav-link:hover {
+    color: white; /* สีขาวเมื่อ active หรือ hover */
+    text-shadow: 0 0 5px #00BFFF;
+}
+
+.nav-login {
+    /* อยู่ขวาสุด */
+}
+
+.nav-link-button {
+    background-color: #007FFF; /* สีน้ำเงิน (Azure) */
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-link-button:hover {
+    background-color: #005f9e;
+}
