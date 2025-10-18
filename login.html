@@ -7,55 +7,15 @@
     <link rel="stylesheet" href="style.css">
     
     <style>
-        .login-container {
-            max-width: 500px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
-        .login-box {
-            margin-bottom: 2rem;
-        }
-        .login-box h2 {
-            border-bottom: 2px solid #007FFF;
-            padding-bottom: 0.5rem;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 0.5rem;
-            box-sizing: border-box; /* ทำให้ padding ไม่ล้น */
-        }
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-        }
-        .btn-google {
-            background-color: #4285F4;
-            color: white;
-        }
-        .btn-admin {
-            background-color: #333;
-            color: white;
-        }
+        .login-container { max-width: 500px; /* ... (เหมือนเดิม) ... */ }
+        .login-box { /* ... (เหมือนเดิม) ... */ }
+        /* ... (CSS อื่นๆ เหมือนเดิม) ... */
     </style>
 
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    
     <script src="nav.js"></script>
-
 </head>
 <body>
 
@@ -71,17 +31,11 @@
     </nav>
 
     <main class="login-container">
-
         <div class="login-box">
             <h2>สำหรับลูกค้า</h2>
-            <p>ล็อกอินด้วย Google เพื่อสั่งซื้อสินค้า</p>
-            <button id="google-login-btn" class="btn btn-google">
-                Login with Google
-            </button>
+            <button id="google-login-btn" class="btn btn-google">Login with Google</button>
         </div>
-
         <hr>
-
         <div class="login-box">
             <h2>สำหรับเจ้าของเว็บ</h2>
             <form id="admin-login-form">
@@ -93,14 +47,10 @@
                     <label for="admin-password">Password:</label>
                     <input type="password" id="admin-password" required>
                 </div>
-                <button type="submit" class="btn btn-admin">
-                    Admin Login
-                </button>
+                <button type="submit" class="btn btn-admin">Admin Login</button>
             </form>
         </div>
-
         <div id="error-message" style="color: red; margin-top: 1rem;"></div>
-
     </main>
 
     <script src="auth.js"></script>
