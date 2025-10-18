@@ -1,17 +1,12 @@
-// auth.js
 
-// --- 🔥 V V V สำคัญมาก V V V ---
-// 1. เข้าไปที่ Firebase Console
-// 2. ไปที่ Project Settings (รูปเฟือง) > General
-// 3. เลื่อนลงมาที่ "Your apps"
-// 4. คัดลอกอ็อบเจกต์ `firebaseConfig` ของคุณมาวางแทนที่ตรงนี้
+// Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAz9PWhBDPWUQ1ZGN52rXW6bxMSUxanAVo",
+  authDomain: "nonkungshop.firebaseapp.com",
+  projectId: "nonkungshop",
+  storageBucket: "nonkungshop.firebasestorage.app",
+  messagingSenderId: "961630356337",
+  appId: "1:961630356337:web:0268966e8635f54b68acd0"
 };
 
 // อีเมลของ Admin (ตั้งค่าอีเมลที่คุณจะใช้ล็อกอินหลังบ้านที่นี่)
