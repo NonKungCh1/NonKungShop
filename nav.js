@@ -1,8 +1,8 @@
-// nav.js (ไฟล์ควบคุม Navbar ส่วนกลาง)
+// nav.js
 
-// --- 1. ใส่ Config ของคุณ (เหมือนเดิม) ---
+// 1. ใส่ Config (เช็กให้ชัวร์ว่าคัดลอกมาครบ)
 const firebaseConfig = {
-  apiKey: "AIzaSyAZ9PwHBDPWUQ1ZGN52rXW6bxMSUXAnAVo",
+  apiKey: "AIzaSyAz9PWhBDPWUQ1ZGN52rXW6bxMSUxanAVo",
   authDomain: "nonkungshop.firebaseapp.com",
   projectId: "nonkungshop",
   storageBucket: "nonkungshop.firebasestorage.app",
@@ -10,62 +10,66 @@ const firebaseConfig = {
   appId: "1:961630356337:web:0268966e8635f54b68acd0"
 };
 
-// --- 2. อีเมล Admin ---
+// 2. อีเมล Admin
 const ADMIN_EMAIL = "admin@nonkungshop.com";
 
-// --- 3. เชื่อมต่อ Firebase ---
-firebase.initializeApp(firebaseConfig);
+// 3. เชื่อมต่อ Firebase
+// (เราต้องเช็กก่อนว่าเคย initializeApp แล้วหรือยัง กัน Error)
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 const auth = firebase.auth();
-const googleProvider = new firebase.auth.GoogleAuthProvider(); // ทำให้ auth.js ใช้ได้ด้วย
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-// --- 4. Logic ควบคุม Navbar (หัวใจ) ---
-// ฟังก์ชันนี้จะทำงานทันทีที่หน้าเว็บโหลด และทุกครั้งที่สถานะล็อกอินเปลี่ยน
-auth.onAuthStateChanged(user => {
+// 4. Logic ควบคุม Navbar
+// (เราจะรอให้ DOM โหลดเสร็จก่อน ค่อยทำงาน)
+document.addEventListener('DOMContentLoaded', () => {
     
-    // หาตำแหน่งที่จะใส่ลิงก์
-    const navLinks = document.querySelector('.nav-links');
-    const navLogin = document.querySelector('.nav-login');
-
-    if (user) {
-        // --- ถ้าล็อกอินแล้ว ---
-
-        // 1. เช็กว่าเป็น Admin หรือไม่
-        if (user.email === ADMIN_EMAIL) {
-            // ถ้าใช่, สร้างลิงก์ "Admin"
-            const adminLink = document.createElement('a');
-            adminLink.href = 'admin.html';
-            adminLink.className = 'nav-link';
-            adminLink.innerText = 'Admin Panel';
-            adminLink.style.color = '#FFD700'; // สีทอง
-            navLinks.appendChild(adminLink); // เพิ่มลิงก์เข้าไปในเมนู
-        }
-
-        // 2. สร้างปุ่ม "Logout"
-        navLogin.innerHTML = ''; // ล้างปุ่ม Login เก่าทิ้ง
-        const logoutButton = document.createElement('button');
-        logoutButton.className = 'nav-link-button'; // ใช้ CSS เดิม
-        logoutButton.innerText = 'Logout';
-        logoutButton.style.backgroundColor = '#8B0000'; // สีแดงเข้ม
+    auth.onAuthStateChanged(user => {
         
-        // 3. สั่งให้ปุ่ม Logout ทำงาน
-        logoutButton.onclick = async () => {
-            await auth.signOut();
-            alert('คุณออกจากระบบแล้ว');
-            window.location.href = 'index.html'; // กลับไปหน้าแรก
-        };
+        const navLinks = document.querySelector('.nav-links');
+        const navLogin = document.querySelector('.nav-login');
 
-        navLogin.appendChild(logoutButton); // เพิ่มปุ่ม Logout
+        // (เคลียร์ลิงก์ Admin เก่า กันมันซ้ำซ้อน)
+        const oldAdminLink = document.getElementById('admin-link');
+        if (oldAdminLink) oldAdminLink.remove();
 
-    } else {
-        // --- ถ้ายังไม่ล็อกอิน (หรือเพิ่ง Logout) ---
-        
-        // 1. สร้างปุ่ม "Login" (เหมือนเดิม)
-        navLogin.innerHTML = ''; // ล้างปุ่ม (ถ้ามี)
-        const loginLink = document.createElement('a');
-        loginLink.href = 'login.html';
-        loginLink.className = 'nav-link-button';
-        loginLink.innerText = 'Login';
-        navLogin.appendChild(loginLink);
-    }
-});
+        if (user) {
+            // --- ถ้าล็อกอินแล้ว ---
+
+            if (user.email === ADMIN_EMAIL) {
+                const adminLink = document.createElement('a');
+                adminLink.href = 'admin.html';
+                adminLink.className = 'nav-link';
+                adminLink.id = 'admin-link'; // เพิ่ม ID
+                adminLink.innerText = 'Admin Panel';
+                adminLink.style.color = '#FFD700';
+                navLinks.appendChild(adminLink);
+            }
+
+            navLogin.innerHTML = '';
+            const logoutButton = document.createElement('button');
+            logoutButton.className = 'nav-link-button';
+            logoutButton.innerText = 'Logout';
+            logoutButton.style.backgroundColor = '#8B0000';
             
+            logoutButton.onclick = async () => {
+                await auth.signOut();
+                alert('คุณออกจากระบบแล้ว');
+                window.location.href = 'index.html';
+            };
+
+            navLogin.appendChild(logoutButton);
+
+        } else {
+            // --- ถ้ายังไม่ล็อกอิน ---
+            navLogin.innerHTML = '';
+            const loginLink = document.createElement('a');
+            loginLink.href = 'login.html';
+            loginLink.className = 'nav-link-button';
+            loginLink.innerText = 'Login';
+            navLogin.appendChild(loginLink);
+        }
+    });
+
+});
