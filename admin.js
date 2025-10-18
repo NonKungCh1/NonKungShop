@@ -1,34 +1,36 @@
-// admin.js
+// admin.js (เวอร์ชันใหม่ - Cloudinary)
+
+// --- 🔥 กุญแจ Cloudinary ของคุณ ---
+const CLOUD_NAME = "ddpgaowiq";
+const UPLOAD_PRESET = "afpw0luz";
+// ---------------------------------
 
 // (รอให้ DOM โหลดเสร็จก่อน ค่อยทำงาน)
 document.addEventListener('DOMContentLoaded', () => {
 
-    // (เราต้องใช้ auth, ADMIN_EMAIL จาก nav.js)
-    // (และเราต้องสร้างตัวแปร db, storage)
+    // (เรายังต้องใช้ Firestore (db) และ Auth (auth) จาก nav.js)
     const db = firebase.firestore();
-    const storage = firebase.storage();
 
-    // --- 1. ตรวจสอบสิทธิ์ Admin ---
+    // --- 1. ตรวจสอบสิทธิ์ Admin (เหมือนเดิม) ---
     auth.onAuthStateChanged(user => {
         if (!user || user.email !== ADMIN_EMAIL) {
-            // ถ้าไม่ใช่ Admin หรือยังไม่ล็อกอิน
+            // (ADMIN_EMAIL มาจาก nav.js)
             alert('คุณไม่มีสิทธิ์เข้าหน้านี้!');
-            window.location.href = 'index.html'; // เด้งกลับหน้าแรก
+            window.location.href = 'index.html'; 
         }
     });
 
-    // --- 2. หา Element ในหน้า ---
+    // --- 2. หา Element ในหน้า (เหมือนเดิม) ---
     const addProductForm = document.getElementById('add-product-form');
     const submitBtn = document.getElementById('submit-btn');
     const uploadStatus = document.getElementById('upload-status');
     const productListAdmin = document.getElementById('product-list-admin');
 
-    // --- 3. ฟังก์ชันเพิ่มสินค้า (เมื่อกด Submit) ---
+    // --- 3. ฟังก์ชันเพิ่มสินค้า (อัปเกรด!) ---
     if (addProductForm) {
         addProductForm.onsubmit = async (e) => {
             e.preventDefault();
             
-            // ดึงข้อมูลจากฟอร์ม
             const name = document.getElementById('product-name').value;
             const price = Number(document.getElementById('product-price').value);
             const desc = document.getElementById('product-desc').value;
@@ -42,37 +44,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
             submitBtn.disabled = true;
             submitBtn.innerText = 'กำลังอัปโหลด...';
-            uploadStatus.innerText = 'กำลังอัปโหลดรูปภาพ...';
+            uploadStatus.innerText = 'กำลังอัปโหลดรูปภาพไป Cloudinary...';
             uploadStatus.style.color = 'blue';
 
             try {
-                // 3.1 อัปโหลดรูปไปที่ Storage
-                const filePath = `products/${Date.now()}_${file.name}`;
-                const fileRef = storage.ref(filePath);
-                await fileRef.put(file);
+                // 3.1 (ใหม่) อัปโหลดรูปไปที่ Cloudinary
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('upload_preset', UPLOAD_PRESET);
 
-                // 3.2 เอา Download URL ของรูป
-                const imageUrl = await fileRef.getDownloadURL();
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await res.json();
+                
+                if (data.error) {
+                    throw new Error(data.error.message);
+                }
+
+                // 3.2 (ใหม่) เอา URL ของรูป (secure_url)
+                const imageUrl = data.secure_url;
                 uploadStatus.innerText = 'รูปภาพอัปโหลดสำเร็จ! กำลังบันทึกข้อมูล...';
                 
-                // 3.3 บันทึกข้อมูลลง Firestore
+                // 3.3 (เหมือนเดิม) บันทึกข้อมูลลง Firestore
                 await db.collection('products').add({
                     name: name,
                     price: price,
                     description: desc,
-                    imageUrl: imageUrl,
-                    imagePath: filePath, // (เก็บ Path ไว้ใช้ตอนลบรูป)
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp() // เก็บเวลา
+                    imageUrl: imageUrl, // <-- ใช้ URL จาก Cloudinary
+                    // (เราไม่จำเป็นต้องเก็บ imagePath แล้ว)
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp() 
                 });
 
-                // 3.4 เคลียร์ฟอร์ม และแจ้งผล
+                // 3.4 (เหมือนเดิม) เคลียร์ฟอร์ม และแจ้งผล
                 uploadStatus.innerText = 'เพิ่มสินค้าสำเร็จ!';
                 uploadStatus.style.color = 'green';
                 addProductForm.reset();
                 submitBtn.disabled = false;
                 submitBtn.innerText = 'เพิ่มสินค้า';
                 
-                // (โหลดรายการสินค้าใหม่)
                 await loadProducts();
 
             } catch (error) {
@@ -85,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // --- 4. ฟังก์ชันดึงสินค้ามาโชว์ (สำหรับลบ) ---
+    // --- 4. ฟังก์ชันดึงสินค้ามาโชว์ (อัปเกรด!) ---
     async function loadProducts() {
         if (!productListAdmin) return;
         
@@ -93,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const querySnapshot = await db.collection('products').orderBy('createdAt', 'desc').get();
         
-        productListAdmin.innerHTML = ''; // ล้างของเก่า
+        productListAdmin.innerHTML = ''; 
         
         querySnapshot.forEach(doc => {
             const product = doc.data();
@@ -107,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <img src="${product.imageUrl}" alt="${product.name}">
                     ${product.name} (${product.price} บาท)
                 </span>
-                <button class="btn-delete" data-id="${productId}" data-path="${product.imagePath}">
+                <button class="btn-delete" data-id="${productId}">
                     ลบ
                 </button>
             `;
@@ -119,29 +131,25 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.btn-delete').forEach(button => {
             button.onclick = async (e) => {
                 const id = e.target.dataset.id;
-                const path = e.target.dataset.path;
                 
-                if (confirm('คุณแน่ใจนะว่าจะลบสินค้านี้?')) {
+                if (confirm('คุณแน่ใจนะว่าจะลบสินค้านี้? (รูปจะยังค้างในระบบ Cloudinary)')) {
                     try {
-                        // 1. ลบข้อมูลใน Firestore
+                        // (ใหม่) ลบข้อมูลใน Firestore เท่านั้น
                         await db.collection('products').doc(id).delete();
-                        // 2. ลบรูปใน Storage
-                        await storage.ref(path).delete();
                         
-                        alert('ลบสินค้าสำเร็จ!');
+                        alert('ลบข้อมูลสินค้าสำเร็จ!');
                         await loadProducts(); // โหลดรายการใหม่
                         
                     } catch (error) {
-                        console.error('Error deleting product: ', error);
-                        alert('เกิดข้อผิดพลาดตอนลบ');
+                        console.error('Error deleting product data: ', error);
+                        alert('เกิดข้อผิดพลาดตอนลบข้อมูล');
                     }
                 }
             };
         });
     }
 
-    // --- 5. สั่งให้โหลดสินค้าทันทีที่เปิดหน้า ---
+    // --- 5. สั่งให้โหลดสินค้าทันที (เหมือนเดิม) ---
     loadProducts();
 
 });
-                                         
