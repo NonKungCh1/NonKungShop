@@ -1,27 +1,47 @@
-// admin.js (เวอร์ชันใหม่ - Cloudinary)
+// admin.js (เวอร์ชัน 3.0 - หลายเวอร์ชัน)
 
-// --- 🔥 แก้ตรงนี้ครับ 🔥 ---
+// --- 🔥 กุญแจ Cloudinary ของคุณ ---
 const CLOUD_NAME = "ddpgaowiq";
-const UPLOAD_PRESET = "nonkungshop"; // <-- ต้องเป็นตัว l (แอล) ไม่ใช่ i (ไอ)
+const UPLOAD_PRESET = "nonkungshop";
 // ---------------------------------
 
-// (รอให้ DOM โหลดเสร็จก่อน ค่อยทำงาน)
+// (ฟังก์ชันใหม่: แปลง Textarea เป็น Object)
+function parseVersions(text) {
+    const versions = {};
+    const lines = text.split('\n'); // แยกทีละบรรทัด
+    
+    for (const line of lines) {
+        const parts = line.split(':'); // แยก "ชื่อ" กับ "ลิงก์"
+        if (parts.length >= 2) {
+            const version_name = parts[0].trim(); // "1.0 (Stable)"
+            const version_url = parts.slice(1).join(':').trim(); // "https://..."
+            
+            if (version_name && version_url) {
+                versions[version_name] = version_url;
+            }
+        }
+    }
+    return versions;
+}
+
+
+// (รอให้ DOM โหลดเสร็จก่อน)
 document.addEventListener('DOMContentLoaded', () => {
 
-    // (เรายังต้องใช้ Firestore (db) และ Auth (auth) จาก nav.js)
     const db = firebase.firestore();
+    // (เราไม่ใช้ Firebase Storage)
 
     // --- 1. ตรวจสอบสิทธิ์ Admin (เหมือนเดิม) ---
     auth.onAuthStateChanged(user => {
         if (!user || user.email !== ADMIN_EMAIL) {
-            // (ADMIN_EMAIL มาจาก nav.js)
             alert('คุณไม่มีสิทธิ์เข้าหน้านี้!');
             window.location.href = 'index.html'; 
         }
     });
 
-    // --- 2. หา Element ในหน้า (เหมือนเดิม) ---
+    // --- 2. หา Element (เหมือนเดิม) ---
     const addProductForm = document.getElementById('add-product-form');
+    // ... (หาปุ่มอื่นๆ เหมือนเดิม) ...
     const submitBtn = document.getElementById('submit-btn');
     const uploadStatus = document.getElementById('upload-status');
     const productListAdmin = document.getElementById('product-list-admin');
@@ -31,24 +51,29 @@ document.addEventListener('DOMContentLoaded', () => {
         addProductForm.onsubmit = async (e) => {
             e.preventDefault();
             
+            // ดึงข้อมูลจากฟอร์ม
             const name = document.getElementById('product-name').value;
             const price = Number(document.getElementById('product-price').value);
             const desc = document.getElementById('product-desc').value;
             const file = document.getElementById('product-image').files[0];
+            
+            // 🔥 (ดึงข้อมูลช่องใหม่) 🔥
+            const versionsText = document.getElementById('product-versions').value; 
+            const versionsObject = parseVersions(versionsText); // (แปลงเป็น Object)
 
-            if (!name || !price || !file) {
-                uploadStatus.innerText = 'กรุณากรอกข้อมูลและใส่รูปภาพให้ครบ';
+            if (!name || !price || !file || Object.keys(versionsObject).length === 0) {
+                uploadStatus.innerText = 'กรุณากรอกข้อมูล, ใส่รูปภาพ, และใส่เวอร์ชันไฟล์ให้ถูกต้อง';
                 uploadStatus.style.color = 'red';
                 return;
             }
 
+            // ... (โค้ด "กำลังอัปโหลด..." เหมือนเดิม) ...
             submitBtn.disabled = true;
             submitBtn.innerText = 'กำลังอัปโหลด...';
-            uploadStatus.innerText = 'กำลังอัปโหลดรูปภาพไป Cloudinary...';
-            uploadStatus.style.color = 'blue';
+            uploadStatus.innerText = 'กำลังอัปโหลดรูปภาพปกไป Cloudinary...';
 
             try {
-                // 3.1 (ใหม่) อัปโหลดรูปไปที่ Cloudinary
+                // 3.1 อัปโหลด "รูปปก" (เหมือนเดิม)
                 const formData = new FormData();
                 formData.append('file', file);
                 formData.append('upload_preset', UPLOAD_PRESET);
@@ -59,40 +84,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 const data = await res.json();
-                
-                if (data.error) {
-                    throw new Error(data.error.message);
-                }
+                if (data.error) throw new Error(data.error.message);
 
-                // 3.2 (ใหม่) เอา URL ของรูป (secure_url)
                 const imageUrl = data.secure_url;
                 uploadStatus.innerText = 'รูปภาพอัปโหลดสำเร็จ! กำลังบันทึกข้อมูล...';
                 
-                // 3.3 (เหมือนเดิม) บันทึกข้อมูลลง Firestore
+                // 3.2 บันทึกข้อมูลลง Firestore (อัปเกรด!)
                 await db.collection('products').add({
                     name: name,
                     price: price,
                     description: desc,
-                    imageUrl: imageUrl, // <-- ใช้ URL จาก Cloudinary
-                    // (เราไม่จำเป็นต้องเก็บ imagePath แล้ว)
+                    imageUrl: imageUrl, 
+                    versions: versionsObject,  // 🔥 (บันทึก Object ของเวอร์ชัน) 🔥
                     createdAt: firebase.firestore.FieldValue.serverTimestamp() 
                 });
 
-                // 3.4 (เหมือนเดิม) เคลียร์ฟอร์ม และแจ้งผล
+                // 3.3 เคลียร์ฟอร์ม (เหมือนเดิม)
                 uploadStatus.innerText = 'เพิ่มสินค้าสำเร็จ!';
-                uploadStatus.style.color = 'green';
                 addProductForm.reset();
                 submitBtn.disabled = false;
                 submitBtn.innerText = 'เพิ่มสินค้า';
-                
                 await loadProducts();
 
             } catch (error) {
                 console.error("Error adding product: ", error);
                 uploadStatus.innerText = 'เกิดข้อผิดพลาด: ' + error.message;
-                uploadStatus.style.color = 'red';
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'เพิ่มสินค้า';
             }
         };
     }
@@ -100,11 +116,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 4. ฟังก์ชันดึงสินค้ามาโชว์ (อัปเกรด!) ---
     async function loadProducts() {
         if (!productListAdmin) return;
-        
         productListAdmin.innerHTML = 'กำลังโหลดสินค้า...';
         
         const querySnapshot = await db.collection('products').orderBy('createdAt', 'desc').get();
-        
         productListAdmin.innerHTML = ''; 
         
         querySnapshot.forEach(doc => {
@@ -114,10 +128,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const item = document.createElement('div');
             item.className = 'product-item';
             
+            // (นับว่ามีกี่เวอร์ชัน)
+            let versionCount = product.versions ? Object.keys(product.versions).length : 0;
+
             item.innerHTML = `
                 <span>
                     <img src="${product.imageUrl}" alt="${product.name}">
                     ${product.name} (${product.price} บาท)
+                    <br>
+                    <small style="color: #555;">มี ${versionCount} เวอร์ชัน</small>
                 </span>
                 <button class="btn-delete" data-id="${productId}">
                     ลบ
@@ -127,22 +146,18 @@ document.addEventListener('DOMContentLoaded', () => {
             productListAdmin.appendChild(item);
         });
 
-        // (เพิ่ม Event ให้ปุ่มลบทุกปุ่ม)
+        // (ปุ่มลบ - เหมือนเดิม)
         document.querySelectorAll('.btn-delete').forEach(button => {
             button.onclick = async (e) => {
                 const id = e.target.dataset.id;
                 
-                if (confirm('คุณแน่ใจนะว่าจะลบสินค้านี้? (รูปจะยังค้างในระบบ Cloudinary)')) {
+                if (confirm('คุณแน่ใจนะว่าจะลบสินค้านี้?')) {
                     try {
-                        // (ใหม่) ลบข้อมูลใน Firestore เท่านั้น
                         await db.collection('products').doc(id).delete();
-                        
                         alert('ลบข้อมูลสินค้าสำเร็จ!');
-                        await loadProducts(); // โหลดรายการใหม่
-                        
+                        await loadProducts();
                     } catch (error) {
                         console.error('Error deleting product data: ', error);
-                        alert('เกิดข้อผิดพลาดตอนลบข้อมูล');
                     }
                 }
             };
