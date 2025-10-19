@@ -332,5 +332,34 @@ body {
     }
     
 
+/* --- 8. CSS สำหรับ Pop-up ดาวน์โหลด (แปะเพิ่มล่างสุด) --- */
+
+/* (สไตล์ปุ่ม "ดาวน์โหลด" ที่หน้า Shop) */
+.btn-download {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: 'Kanit', sans-serif;
+    color: white;
+    background-color: #28a745; /* สีเขียว (แปลว่าเป็นเจ้าของแล้ว) */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+.btn-download:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+/* (สไตล์ลิงก์ใน Pop-up ดาวน์โหลด) */
+.download-links-container {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column; /* เรียงปุ่มแนวตั้ง */
+    gap: 0.5rem; /* ระยะห่างระหว่างปุ่ม */
+}
 
 
