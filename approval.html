@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>อนุมัติออเดอร์ - NonKungShop</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .approval-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .order-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .order-info {
+            font-size: 0.9rem;
+        }
+        .order-info strong {
+            color: #007FFF;
+        }
+        .slip-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-right: 1rem;
+        }
+        .btn-approve {
+            background-color: #28a745;
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .btn-approve:disabled {
+            background-color: #aaa;
+        }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="nav.js"></script>
+</head>
+<body>
+
+    <nav class="navbar">...</nav>
+
+    <main class="approval-container">
+        <h1>อนุมัติออเดอร์</h1>
+        <p>รายการสลิปที่รอการตรวจสอบ (Pending Review)</p>
+        
+        <div id="pending-orders-list">
+            </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    <script src="approval.js"></script>
+
+</body>
+</html>
