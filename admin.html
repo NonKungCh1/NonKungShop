@@ -65,9 +65,23 @@
             border-radius: 5px;
             cursor: pointer;
         }
-    </style>
-
     
+        /* (CSS ... เหมือนเดิม) */
+        /* (เพิ่ม CSS ปุ่มยกเลิก) */
+        #btn-cancel-edit {
+            background-color: #6c757d;
+            margin-left: 10px;
+        }
+        .btn-edit {
+            background-color: #ffc107;
+            color: black;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+    </style>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
     <script src="nav.js"></script>
@@ -79,7 +93,9 @@
         <h1>Admin Panel (จัดการร้าน)</h1>
 
         <form class="form-admin" id="add-product-form">
-            <h2>เพิ่มสินค้าใหม่</h2>
+            <h2 id="form-title">เพิ่มสินค้าใหม่</h2>
+            
+            <input type="hidden" id="edit-product-id">
             
             <div class="form-group">
                 <label for="product-name">ชื่อสินค้า:</label>
@@ -98,20 +114,26 @@
             
             <div class="form-group">
                 <label for="product-image">รูปภาพสินค้า (หน้าปก):</label>
-                <input type="file" id="product-image" accept="image/*" required>
+                <input type="file" id="product-image" accept="image/*">
+                <small>(ถ้า "แก้ไข" แล้วไม่เลือกรูปใหม่ จะใช้รูปเดิม)</small>
             </div>
 
             <div class="form-group">
                 <label for="product-versions">เวอร์ชันไฟล์ (รูปแบบ: ชื่อเวอร์ชัน: ลิงก์):</label>
                 <textarea id="product-versions" rows="5" placeholder="เช่น...&#10;1.0 (Stable): https://.../file-v1.zip&#10;1.1 (Beta): https://.../file-v1.1.zip" required></textarea>
             </div>
+            
             <button type="submit" class="btn-admin-submit" id="submit-btn">
                 เพิ่มสินค้า
             </button>
+            <button type="button" class="btn-admin-submit" id="btn-cancel-edit" style="display: none;">
+                ยกเลิก
+            </button>
+
             <div id="upload-status" style="margin-top: 1rem;"></div>
         </form>
 
-        <h2>สินค้าที่มีอยู่ (คลิกเพื่อลบ)</h2>
+        <h2>สินค้าที่มีอยู่ (คลิกเพื่อแก้ไข/ลบ)</h2>
         <div class="product-list" id="product-list-admin"></div>
     </main>
 
@@ -119,5 +141,3 @@
     <script src="admin.js"></script>
 </body>
 </html>
-
-    
