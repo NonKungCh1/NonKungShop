@@ -1,6 +1,6 @@
 // nav.js (Updated with Approval Link)
 
-// 1. ใส่ Config (เช็กให้ชัวร์ว่าคัดลอกมาครบ)
+// 1. Firebase Config (Make sure this matches your Firebase project)
 const firebaseConfig = {
   apiKey: "AIzaSyCPeHRJASYNFtMIpikn8ASPz7kQosL3ftQ",
   authDomain: "nonkungshop1.firebaseapp.com",
@@ -11,19 +11,19 @@ const firebaseConfig = {
 };
 
 
-// 2. อีเมล Admin
+// 2. Admin Email
 const ADMIN_EMAIL = "admin@nonkungshop.com";
 
-// 3. เชื่อมต่อ Firebase
-// (เราต้องเช็กก่อนว่าเคย initializeApp แล้วหรือยัง กัน Error)
+// 3. Initialize Firebase
+// (Check if already initialized to prevent errors)
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 const auth = firebase.auth();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-// 4. Logic ควบคุม Navbar
-// (เราจะรอให้ DOM โหลดเสร็จก่อน ค่อยทำงาน)
+// 4. Navbar Logic
+// (Wait for the DOM to load before running)
 document.addEventListener('DOMContentLoaded', () => {
 
     auth.onAuthStateChanged(user => {
@@ -31,14 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const navLinks = document.querySelector('.nav-links');
         const navLogin = document.querySelector('.nav-login');
 
-        // (เคลียร์ลิงก์ Admin เก่า กันมันซ้ำซ้อน)
+        // (Clear old Admin links to prevent duplicates)
         const oldAdminLink = document.getElementById('admin-link');
         const oldApprovalLink = document.getElementById('approval-link'); // <-- Clear approval link too
         if (oldAdminLink) oldAdminLink.remove();
         if (oldApprovalLink) oldApprovalLink.remove(); // <-- Clear approval link too
 
         if (user) {
-            // --- ถ้าล็อกอินแล้ว ---
+            // --- If Logged In ---
 
             // **Check if user is Admin**
             if (user.email === ADMIN_EMAIL) {
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
             navLogin.appendChild(logoutButton);
 
         } else {
-            // --- ถ้ายังไม่ล็อกอิน ---
+            // --- If Not Logged In ---
             navLogin.innerHTML = ''; // Clear previous button (Logout)
             const loginLink = document.createElement('a');
             loginLink.href = 'login.html';
